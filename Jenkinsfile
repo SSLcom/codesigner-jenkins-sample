@@ -13,12 +13,11 @@ pipeline {
 
     // Create an environment variable
     environment {
-        USERNAME          = credentials('es-username')       // SSL.com account username.
-        PASSWORD          = credentials('es-password')       // SSL.com account password.
-        CREDENTIAL_ID     = credentials('es-crendential-id') // Credential ID for signing certificate.
-        TOTP_SECRET       = credentials('es-totp-secret')    // OAuth TOTP Secret (https://www.ssl.com/how-to/automate-esigner-ev-code-signing)
-        
-        ENVIRONMENT_NAME  = 'TEST'                           // SSL.com Environment Name. For Demo Account It can be 'TEST' otherwise it will be 'PROD'
+        USERNAME          = 'esigner_demo'                            // SSL.com account username.
+        CREDENTIAL_ID     = '8b072e22-7685-4771-b5c6-48e46614915f'    // Credential ID for signing certificate.
+        PASSWORD          = credentials('es-password')                // SSL.com account password.
+        TOTP_SECRET       = credentials('es-totp-secret')             // OAuth TOTP Secret (https://www.ssl.com/how-to/automate-esigner-ev-code-signing)        
+        ENVIRONMENT_NAME  = 'TEST'                                    // SSL.com Environment Name. For Demo Account It can be 'TEST' otherwise it will be 'PROD'
         
         // CodeSignTool Commands:
         // - get_credential_ids: Output the list of eSigner credential IDs associated with a particular user.
