@@ -38,8 +38,8 @@ pipeline {
         // 1) Create Artifact Directory for store signed and unsigned artifact files
         stage('Prepare for Signing') {
             steps {
-                sh 'mkdir ${WORKSPACE}/artifacts'
-                sh 'mkdir ${WORKSPACE}/packages'
+                sh 'mkdir -p ${WORKSPACE}/artifacts'
+                sh 'mkdir -p ${WORKSPACE}/packages'
             }
         }
 
