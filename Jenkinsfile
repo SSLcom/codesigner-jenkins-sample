@@ -13,11 +13,12 @@ pipeline {
 
     // Create an environment variable
     environment {
-        USERNAME          = 'esigner_demo'                            // SSL.com account username.
-        CREDENTIAL_ID     = '8b072e22-7685-4771-b5c6-48e46614915f'    // Credential ID for signing certificate.
-        PASSWORD          = credentials('es-password')                // SSL.com account password.
-        TOTP_SECRET       = credentials('es-totp-secret')             // OAuth TOTP Secret (https://www.ssl.com/how-to/automate-esigner-ev-code-signing)
-        ENVIRONMENT_NAME  = 'TEST'                                    // SSL.com Environment Name. For Demo Account It can be 'TEST' otherwise it will be 'PROD'
+        USERNAME          = credentials('es-username')       // SSL.com account username.
+        PASSWORD          = credentials('es-password')       // SSL.com account password.
+        CREDENTIAL_ID     = credentials('es-crendential-id') // Credential ID for signing certificate.
+        TOTP_SECRET       = credentials('es-totp-secret')    // OAuth TOTP Secret (https://www.ssl.com/how-to/automate-esigner-ev-code-signing)
+        
+        ENVIRONMENT_NAME  = 'TEST'                           // SSL.com Environment Name. For Demo Account It can be 'TEST' otherwise it will be 'PROD'
         
         // CodeSignTool Commands:
         // - get_credential_ids: Output the list of eSigner credential IDs associated with a particular user.
@@ -66,7 +67,6 @@ pipeline {
         // 4) This is the step where the created DLL (artifact) files will be signed with CodeSignTool.
         stage('Sign and Save Dotnet Core DLL Artifact') {
             steps {
-                sh 'echo "${USERNAME} user signs code with certificate with ${CREDENTIAL_ID} credential-id"'
                 sh 'docker run -i --rm --dns 8.8.8.8 --network host --volume ${WORKSPACE}/packages:/codesign/examples --volume ${WORKSPACE}/artifacts:/codesign/output -e USERNAME=${USERNAME} -e PASSWORD=${PASSWORD} -e CREDENTIAL_ID=${CREDENTIAL_ID} -e TOTP_SECRET=${TOTP_SECRET} -e ENVIRONMENT_NAME=${ENVIRONMENT_NAME} ghcr.io/sslcom/codesigner:latest ${COMMAND} -input_file_path=/codesign/examples/${PROJECT_NAME}.dll -output_dir_path=/codesign/output'
             }
             post {
